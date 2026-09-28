@@ -7,16 +7,21 @@ import { useRouter } from 'next/navigation';
 export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
-    // Initialize Next.js App Router navigation hook
+    const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('Logging in with:', { email, password });
+        setIsLoading(true);
 
-        // Redirect the user to your main dashboard/control-center page
-        router.push('/control-center');
+        try {
+            console.log('Logging in with:', { email, password });
+            router.push('/control-center');
+        } catch (error) {
+            console.error('Navigation error:', error);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -27,7 +32,9 @@ export default function LoginPage() {
 
                 <form onSubmit={handleSubmit} style={styles.form}>
                     <div style={styles.inputGroup}>
-                        <label htmlFor="email" style={styles.label}>Email Address</label>
+                        <label htmlFor="email" style={styles.label}>
+                            Email Address
+                        </label>
                         <input
                             id="email"
                             type="email"
@@ -40,7 +47,9 @@ export default function LoginPage() {
                     </div>
 
                     <div style={styles.inputGroup}>
-                        <label htmlFor="password" style={styles.label}>Password</label>
+                        <label htmlFor="password" style={styles.label}>
+                            Password
+                        </label>
                         <input
                             id="password"
                             type="password"
@@ -52,8 +61,8 @@ export default function LoginPage() {
                         />
                     </div>
 
-                    <button type="submit" style={styles.button}>
-                        Sign In
+                    <button type="submit" disabled={isLoading} style={styles.button}>
+                        {isLoading ? 'Signing In...' : 'Sign In'}
                     </button>
                 </form>
 
