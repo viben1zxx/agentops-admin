@@ -1,3 +1,6 @@
+import type { Metadata } from 'next';
+import './globals.css';
+
 export const metadata: Metadata = {
   title: 'AgentOps Control Center',
   description: 'Enterprise AI Telemetry Dashboard',
@@ -6,3 +9,15 @@ export const metadata: Metadata = {
     follow: false,
   },
 };
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  );
+}
