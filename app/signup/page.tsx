@@ -2,15 +2,22 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function SignupPage() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    // Initialize the router
+    const router = useRouter();
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         console.log('Signing up with:', { name, email, password });
+
+        // Redirect the user to the login page
+        router.push('/login');
     };
 
     return (
@@ -134,7 +141,7 @@ const styles: { [key: string]: React.CSSProperties } = {
         padding: '0.75rem',
         borderRadius: '6px',
         border: 'none',
-        backgroundColor: '#10b981', // Changed to green to differentiate from login
+        backgroundColor: '#10b981',
         color: '#ffffff',
         fontWeight: '600',
         fontSize: '1rem',
