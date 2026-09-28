@@ -10,14 +10,8 @@ export default function LoginPage() {
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
-
-        // 1. Write authentication cookie to browser
         document.cookie = 'auth_token=valid_user_session; path=/; max-age=86400';
-
-        // 2. Refresh App Router cache so middleware sees the new cookie
         router.refresh();
-
-        // 3. Navigate to the protected home dashboard
         router.push('/');
     };
 
