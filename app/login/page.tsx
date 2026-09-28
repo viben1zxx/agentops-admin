@@ -16,7 +16,7 @@ export default function LoginPage() {
 
         try {
             console.log('Logging in with:', { email, password });
-            router.push('/control-center');
+            window.location.href = '/control-center';
         } catch (error) {
             console.error('Navigation error:', error);
         } finally {
