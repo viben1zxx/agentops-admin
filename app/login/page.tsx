@@ -2,14 +2,21 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    // Initialize Next.js App Router navigation hook
+    const router = useRouter();
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         console.log('Logging in with:', { email, password });
+
+        // Redirect the user to your main dashboard/control-center page
+        router.push('/control-center');
     };
 
     return (
