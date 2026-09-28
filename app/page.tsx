@@ -10,8 +10,14 @@ export default function LoginPage() {
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
-        // Simulate authentication cookie setting
+
+        // 1. Write authentication cookie to browser
         document.cookie = 'auth_token=valid_user_session; path=/; max-age=86400';
+
+        // 2. Refresh App Router cache so middleware sees the new cookie
+        router.refresh();
+
+        // 3. Navigate to the protected home dashboard
         router.push('/');
     };
 
@@ -23,7 +29,9 @@ export default function LoginPage() {
 
                 <form onSubmit={handleLogin} className="space-y-4">
                     <div>
-                        <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Email</label>
+                        <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+                            Email
+                        </label>
                         <input
                             type="email"
                             required
@@ -34,7 +42,9 @@ export default function LoginPage() {
                         />
                     </div>
                     <div>
-                        <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Password</label>
+                        <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+                            Password
+                        </label>
                         <input
                             type="password"
                             required
@@ -46,7 +56,7 @@ export default function LoginPage() {
                     </div>
                     <button
                         type="submit"
-                        className="w-full bg-blue-600 hover:bg-blue-500 text-white font-medium py-2.5 rounded-lg transition text-sm mt-2"
+                        className="w-full bg-blue-600 hover:bg-blue-500 text-white font-medium py-2.5 rounded-lg transition text-sm mt-2 cursor-pointer"
                     >
                         Authenticate Session
                     </button>
