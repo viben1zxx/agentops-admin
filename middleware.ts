@@ -2,16 +2,18 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
-    const authToken = request.cookies.get('auth_token');
-    const isLoginPage = request.nextUrl.pathname === '/login';
+    const token = request.cookies.get('auth_token')?.value;
+    const { pathname } = request.nextUrl;
 
-    // Redirect unauthenticated users to /login
-    if (!authToken && !isLoginPage) {
+    const isPublicRoute = pathname === '/login' || pathname === '/signup';
+
+    // If user is not logged in and trying to access a protected route
+    if (!token && !isPublicRoute) {
         return NextResponse.redirect(new URL('/login', request.url));
     }
 
-    // Redirect already authenticated users away from /login to dashboard
-    if (authToken && isLoginPage) {
+    // If user is already logged in and tries to access login or signup
+    if (token && isPublicRoute) {
         return NextResponse.redirect(new URL('/', request.url));
     }
 
@@ -19,5 +21,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+    matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
 };

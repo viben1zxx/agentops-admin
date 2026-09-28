@@ -3,52 +3,42 @@
 import { useState } from 'react';
 import Link from 'next/link';
 
-export default function LoginPage() {
+export default function SignupPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [registered, setRegistered] = useState(false);
 
-    const handleLogin = (e: React.FormEvent) => {
+    const handleSignup = (e: React.FormEvent) => {
         e.preventDefault();
-        setError('');
 
-        // Fetch account saved during registration
-        const storedUserRaw = localStorage.getItem('registered_user');
+        // Store user account credentials locally for authentication
+        const userAccount = { email, password };
+        localStorage.setItem('registered_user', JSON.stringify(userAccount));
 
-        if (!storedUserRaw) {
-            setError('No account found. Please sign up first.');
-            return;
-        }
-
-        const storedUser = JSON.parse(storedUserRaw);
-
-        // Validate credentials
-        if (storedUser.email === email && storedUser.password === password) {
-            document.cookie = 'auth_token=valid_user_session; path=/; max-age=86400';
-            window.location.href = '/';
-        } else {
-            setError('Invalid email or password. Please try again.');
-        }
+        setRegistered(true);
+        setTimeout(() => {
+            window.location.href = '/login';
+        }, 1500);
     };
 
     return (
         <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center p-4">
             <div className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-xl p-8 shadow-2xl">
-                <h1 className="text-2xl font-bold mb-2 text-white">AgentOps Access</h1>
+                <h1 className="text-2xl font-bold mb-2 text-white">Create Account</h1>
                 <p className="text-slate-400 text-sm mb-6">
-                    Enter your credentials to access telemetry dashboard.
+                    Set up your credentials to access the telemetry dashboard.
                 </p>
 
-                {error && (
-                    <div className="mb-4 p-3 bg-red-500/10 border border-red-500/30 text-red-400 text-xs rounded-lg">
-                        {error}
+                {registered && (
+                    <div className="mb-4 p-3 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs rounded-lg">
+                        Account created successfully! Redirecting to login...
                     </div>
                 )}
 
-                <form onSubmit={handleLogin} className="space-y-4">
+                <form onSubmit={handleSignup} className="space-y-4">
                     <div>
                         <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
-                            Email
+                            Email Address
                         </label>
                         <input
                             type="email"
@@ -56,13 +46,13 @@ export default function LoginPage() {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-blue-500 transition"
-                            placeholder="admin@agentops.io"
+                            placeholder="user@agentops.io"
                         />
                     </div>
 
                     <div>
                         <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
-                            Password
+                            Create Password
                         </label>
                         <input
                             type="password"
@@ -78,14 +68,14 @@ export default function LoginPage() {
                         type="submit"
                         className="w-full bg-blue-600 hover:bg-blue-500 text-white font-medium py-2.5 rounded-lg transition text-sm mt-2 cursor-pointer"
                     >
-                        Authenticate Session
+                        Create Account
                     </button>
                 </form>
 
                 <p className="mt-6 text-center text-xs text-slate-400">
-                    Don't have an account?{' '}
-                    <Link href="/signup" className="text-blue-400 hover:underline">
-                        Sign up here
+                    Already have an account?{' '}
+                    <Link href="/login" className="text-blue-400 hover:underline">
+                        Log in here
                     </Link>
                 </p>
             </div>
